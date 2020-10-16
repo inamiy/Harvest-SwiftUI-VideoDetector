@@ -1,0 +1,43 @@
+{
+  "object": {
+    "pins": [
+      {
+        "package": "FunOptics",
+        "repositoryURL": "https://github.com/inamiy/FunOptics",
+        "state": {
+          "branch": null,
+          "revision": "6fe4e61254dcbf3b773b38e871df4d1df7f2b685",
+          "version": "1.0.4"
+        }
+      },
+      {
+        "package": "Harvest",
+        "repositoryURL": "https://github.com/inamiy/Harvest",
+        "state": {
+          "branch": null,
+          "revision": "9122239f1f52b9979e160f54705f9e8f4004ae3b",
+          "version": "0.2.0"
+        }
+      },
+      {
+        "package": "libtesseract",
+        "repositoryURL": "https://github.com/SwiftyTesseract/libtesseract.git",
+        "state": {
+          "branch": null,
+          "revision": "d8b5fab45f5dc0b1d34b0ca7bf6620b72426adf1",
+          "version": "0.1.0"
+        }
+      },
+      {
+        "package": "SwiftyTesseract",
+        "repositoryURL": "https://github.com/SwiftyTesseract/SwiftyTesseract",
+        "state": {
+          "branch": null,
+          "revision": "1b4f0ef0c2ba08ae92254af730f2013af4ebdc4f",
+          "version": "4.0.0"
+        }
+      }
+    ]
+  },
+  "version": 1
+}

@@ -1,0 +1,459 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 52;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		1F143FF425375D290096C183 /* tessdata in Resources */ = {isa = PBXBuildFile; fileRef = 1F143FF325375D290096C183 /* tessdata */; };
+		1F377713253983450073F95B /* ImagePlaceholder in Frameworks */ = {isa = PBXBuildFile; productRef = 1F377712253983450073F95B /* ImagePlaceholder */; };
+		1F377717253984B60073F95B /* Harvest-SwiftUI-VideoDetector in Frameworks */ = {isa = PBXBuildFile; productRef = 1F377716253984B60073F95B /* Harvest-SwiftUI-VideoDetector */; };
+		1F5DE0092536ECB4006DA6B6 /* SwiftyTesseract in Frameworks */ = {isa = PBXBuildFile; productRef = 1F5DE0082536ECB4006DA6B6 /* SwiftyTesseract */; };
+		1F7B39E1252B5B4300500B4D /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1F7B39E0252B5B4300500B4D /* Assets.xcassets */; };
+		1F7B39E4252B5B4300500B4D /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 1F7B39E3252B5B4300500B4D /* Preview Assets.xcassets */; };
+		1F7B3A00252B61E100500B4D /* HarvestStore in Frameworks */ = {isa = PBXBuildFile; productRef = 1F7B39FF252B61E100500B4D /* HarvestStore */; };
+		1F7B3A02252B61E100500B4D /* Harvest in Frameworks */ = {isa = PBXBuildFile; productRef = 1F7B3A01252B61E100500B4D /* Harvest */; };
+		1F7B3A04252B61E100500B4D /* HarvestOptics in Frameworks */ = {isa = PBXBuildFile; productRef = 1F7B3A03252B61E100500B4D /* HarvestOptics */; };
+		1FC9E26925372F4C0009CF0B /* App.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F7B39DC252B5B4100500B4D /* App.swift */; };
+		1FC9E26A25372F4C0009CF0B /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 1F7B3A0D252B7D3200500B4D /* ContentView.swift */; };
+		1FFFE2A625374322005321D8 /* Harvest-SwiftUI-VideoCapture in Frameworks */ = {isa = PBXBuildFile; productRef = 1FFFE2A525374322005321D8 /* Harvest-SwiftUI-VideoCapture */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		1F143FF325375D290096C183 /* tessdata */ = {isa = PBXFileReference; lastKnownFileType = folder; name = tessdata; path = ../../../../projects/iOS/sandbox/SwiftyTesseractDemo/SwiftyTesseractDemo/tessdata; sourceTree = "<group>"; };
+		1F7B39D9252B5B4100500B4D /* Harvest-SwiftUI-VideoDetector-Demo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Harvest-SwiftUI-VideoDetector-Demo.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		1F7B39DC252B5B4100500B4D /* App.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = App.swift; sourceTree = "<group>"; };
+		1F7B39E0252B5B4300500B4D /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
+		1F7B39E3252B5B4300500B4D /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		1F7B39E5252B5B4300500B4D /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		1F7B3A0D252B7D3200500B4D /* ContentView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
+		1FFFE2A325374317005321D8 /* Harvest-SwiftUI-VideoCapture */ = {isa = PBXFileReference; lastKnownFileType = folder; name = "Harvest-SwiftUI-VideoCapture"; path = ..; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		1F7B39D6252B5B4100500B4D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1F7B3A04252B61E100500B4D /* HarvestOptics in Frameworks */,
+				1F377717253984B60073F95B /* Harvest-SwiftUI-VideoDetector in Frameworks */,
+				1F7B3A02252B61E100500B4D /* Harvest in Frameworks */,
+				1FFFE2A625374322005321D8 /* Harvest-SwiftUI-VideoCapture in Frameworks */,
+				1F7B3A00252B61E100500B4D /* HarvestStore in Frameworks */,
+				1F377713253983450073F95B /* ImagePlaceholder in Frameworks */,
+				1F5DE0092536ECB4006DA6B6 /* SwiftyTesseract in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		1F7B39D0252B5B4100500B4D = {
+			isa = PBXGroup;
+			children = (
+				1F7B39DB252B5B4100500B4D /* Harvest-SwiftUI-VideoDetector-Demo */,
+				1F7B39DA252B5B4100500B4D /* Products */,
+				1FC9E26325372F2B0009CF0B /* Frameworks */,
+			);
+			sourceTree = "<group>";
+		};
+		1F7B39DA252B5B4100500B4D /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				1F7B39D9252B5B4100500B4D /* Harvest-SwiftUI-VideoDetector-Demo.app */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		1F7B39DB252B5B4100500B4D /* Harvest-SwiftUI-VideoDetector-Demo */ = {
+			isa = PBXGroup;
+			children = (
+				1F7B39DC252B5B4100500B4D /* App.swift */,
+				1F7B3A0D252B7D3200500B4D /* ContentView.swift */,
+				1F143FF325375D290096C183 /* tessdata */,
+				1F7B39E0252B5B4300500B4D /* Assets.xcassets */,
+				1F7B39E5252B5B4300500B4D /* Info.plist */,
+				1F7B39E2252B5B4300500B4D /* Preview Content */,
+			);
+			path = "Harvest-SwiftUI-VideoDetector-Demo";
+			sourceTree = "<group>";
+		};
+		1F7B39E2252B5B4300500B4D /* Preview Content */ = {
+			isa = PBXGroup;
+			children = (
+				1F7B39E3252B5B4300500B4D /* Preview Assets.xcassets */,
+			);
+			path = "Preview Content";
+			sourceTree = "<group>";
+		};
+		1FC9E26325372F2B0009CF0B /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				1FFFE2A325374317005321D8 /* Harvest-SwiftUI-VideoCapture */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		1F7B39D8252B5B4100500B4D /* Harvest-SwiftUI-VideoDetector-Demo */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 1F7B39E8252B5B4300500B4D /* Build configuration list for PBXNativeTarget "Harvest-SwiftUI-VideoDetector-Demo" */;
+			buildPhases = (
+				1F7B39D5252B5B4100500B4D /* Sources */,
+				1F7B39D6252B5B4100500B4D /* Frameworks */,
+				1F7B39D7252B5B4100500B4D /* Resources */,
+				1F7DC0C125373940004C33AA /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Harvest-SwiftUI-VideoDetector-Demo";
+			packageProductDependencies = (
+				1F7B39FF252B61E100500B4D /* HarvestStore */,
+				1F7B3A01252B61E100500B4D /* Harvest */,
+				1F7B3A03252B61E100500B4D /* HarvestOptics */,
+				1F5DE0082536ECB4006DA6B6 /* SwiftyTesseract */,
+				1FFFE2A525374322005321D8 /* Harvest-SwiftUI-VideoCapture */,
+				1F377712253983450073F95B /* ImagePlaceholder */,
+				1F377716253984B60073F95B /* Harvest-SwiftUI-VideoDetector */,
+			);
+			productName = "Harvest-SwiftUI-VideoDetector-Demo";
+			productReference = 1F7B39D9252B5B4100500B4D /* Harvest-SwiftUI-VideoDetector-Demo.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		1F7B39D1252B5B4100500B4D /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastSwiftUpdateCheck = 1200;
+				LastUpgradeCheck = 1200;
+				TargetAttributes = {
+					1F7B39D8252B5B4100500B4D = {
+						CreatedOnToolsVersion = 12.0;
+					};
+				};
+			};
+			buildConfigurationList = 1F7B39D4252B5B4100500B4D /* Build configuration list for PBXProject "Harvest-SwiftUI-VideoDetector-Demo" */;
+			compatibilityVersion = "Xcode 9.3";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 1F7B39D0252B5B4100500B4D;
+			packageReferences = (
+				1F7B39FE252B61E100500B4D /* XCRemoteSwiftPackageReference "Harvest" */,
+				1F5DE0072536ECB4006DA6B6 /* XCRemoteSwiftPackageReference "SwiftyTesseract" */,
+				1F377711253983450073F95B /* XCRemoteSwiftPackageReference "ImagePlaceholder" */,
+			);
+			productRefGroup = 1F7B39DA252B5B4100500B4D /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				1F7B39D8252B5B4100500B4D /* Harvest-SwiftUI-VideoDetector-Demo */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		1F7B39D7252B5B4100500B4D /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1F7B39E4252B5B4300500B4D /* Preview Assets.xcassets in Resources */,
+				1F7B39E1252B5B4300500B4D /* Assets.xcassets in Resources */,
+				1F143FF425375D290096C183 /* tessdata in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		1F7DC0C125373940004C33AA /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# https://pspdfkit.com/guides/ios/current/knowledge-base/library-not-found-swiftpm/\nfind \"${CODESIGNING_FOLDER_PATH}\" -name '*.framework' -print0 | while read -d $'\\0' framework \ndo\n    codesign --force --deep --sign \"${EXPANDED_CODE_SIGN_IDENTITY}\" --preserve-metadata=identifier,entitlements --timestamp=none \"${framework}\" \ndone\n\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		1F7B39D5252B5B4100500B4D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				1FC9E26A25372F4C0009CF0B /* ContentView.swift in Sources */,
+				1FC9E26925372F4C0009CF0B /* App.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		1F7B39E6252B5B4300500B4D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+			};
+			name = Debug;
+		};
+		1F7B39E7252B5B4300500B4D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				SDKROOT = iphoneos;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		1F7B39E9252B5B4300500B4D /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_ASSET_PATHS = "\"Harvest-SwiftUI-VideoDetector-Demo/Preview Content\"";
+				DEVELOPMENT_TEAM = UMBZ5WL247;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = "Harvest-SwiftUI-VideoDetector-Demo/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.inamiy.Harvest-SwiftUI-VideoDetector-Demo";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		1F7B39EA252B5B4300500B4D /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_STYLE = Automatic;
+				DEVELOPMENT_ASSET_PATHS = "\"Harvest-SwiftUI-VideoDetector-Demo/Preview Content\"";
+				DEVELOPMENT_TEAM = UMBZ5WL247;
+				ENABLE_PREVIEWS = YES;
+				INFOPLIST_FILE = "Harvest-SwiftUI-VideoDetector-Demo/Info.plist";
+				IPHONEOS_DEPLOYMENT_TARGET = 14.0;
+				LD_RUNPATH_SEARCH_PATHS = (
+					"$(inherited)",
+					"@executable_path/Frameworks",
+				);
+				PRODUCT_BUNDLE_IDENTIFIER = "com.inamiy.Harvest-SwiftUI-VideoDetector-Demo";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		1F7B39D4252B5B4100500B4D /* Build configuration list for PBXProject "Harvest-SwiftUI-VideoDetector-Demo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1F7B39E6252B5B4300500B4D /* Debug */,
+				1F7B39E7252B5B4300500B4D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		1F7B39E8252B5B4300500B4D /* Build configuration list for PBXNativeTarget "Harvest-SwiftUI-VideoDetector-Demo" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				1F7B39E9252B5B4300500B4D /* Debug */,
+				1F7B39EA252B5B4300500B4D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		1F377711253983450073F95B /* XCRemoteSwiftPackageReference "ImagePlaceholder" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/inamiy/ImagePlaceholder";
+			requirement = {
+				branch = main;
+				kind = branch;
+			};
+		};
+		1F5DE0072536ECB4006DA6B6 /* XCRemoteSwiftPackageReference "SwiftyTesseract" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SwiftyTesseract/SwiftyTesseract";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 4.0.0;
+			};
+		};
+		1F7B39FE252B61E100500B4D /* XCRemoteSwiftPackageReference "Harvest" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/inamiy/Harvest.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.2.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		1F377712253983450073F95B /* ImagePlaceholder */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1F377711253983450073F95B /* XCRemoteSwiftPackageReference "ImagePlaceholder" */;
+			productName = ImagePlaceholder;
+		};
+		1F377716253984B60073F95B /* Harvest-SwiftUI-VideoDetector */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = "Harvest-SwiftUI-VideoDetector";
+		};
+		1F5DE0082536ECB4006DA6B6 /* SwiftyTesseract */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1F5DE0072536ECB4006DA6B6 /* XCRemoteSwiftPackageReference "SwiftyTesseract" */;
+			productName = SwiftyTesseract;
+		};
+		1F7B39FF252B61E100500B4D /* HarvestStore */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1F7B39FE252B61E100500B4D /* XCRemoteSwiftPackageReference "Harvest" */;
+			productName = HarvestStore;
+		};
+		1F7B3A01252B61E100500B4D /* Harvest */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1F7B39FE252B61E100500B4D /* XCRemoteSwiftPackageReference "Harvest" */;
+			productName = Harvest;
+		};
+		1F7B3A03252B61E100500B4D /* HarvestOptics */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1F7B39FE252B61E100500B4D /* XCRemoteSwiftPackageReference "Harvest" */;
+			productName = HarvestOptics;
+		};
+		1FFFE2A525374322005321D8 /* Harvest-SwiftUI-VideoCapture */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = "Harvest-SwiftUI-VideoCapture";
+		};
+/* End XCSwiftPackageProductDependency section */
+	};
+	rootObject = 1F7B39D1252B5B4100500B4D /* Project object */;
+}
