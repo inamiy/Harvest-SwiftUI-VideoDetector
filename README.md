@@ -4,12 +4,12 @@
 
 ## Examples
 
-| Face | Text Rect |
+| Face (iOS Vision) | Text Rect (iOS Vision) |
 |---|---|
 | <img src="Assets/ios-vision-face-recognition.jpg" width="750"> | <img src="Assets/ios-vision-text-rect.jpg" width="750"> |
 
 
-| iOS Vision | Tesseract (Japanese) |
+| Text Recognition (iOS Vision) | Text Recognition (Tesseract, Japanese) |
 |---|---|
 | <img src="Assets/ios-vision-text-recognition.jpg" width="750"> | <img src="Assets/tesseract-japanese.jpg" width="750"> |
 
