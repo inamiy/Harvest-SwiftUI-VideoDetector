@@ -1,7 +1,7 @@
 import UIKit
 import AVFoundation
 
-func captureDevice(forPosition position: AVCaptureDevice.Position) -> AVCaptureDevice?
+public func captureDevice(forPosition position: AVCaptureDevice.Position) -> AVCaptureDevice?
 {
     let discoverySession = AVCaptureDevice.DiscoverySession(
         deviceTypes: [.builtInWideAngleCamera],
@@ -11,9 +11,9 @@ func captureDevice(forPosition position: AVCaptureDevice.Position) -> AVCaptureD
     return discoverySession.devices.first { $0.position == position }
 }
 
-extension AVCaptureDevice.Position: CustomStringConvertible
+extension AVCaptureDevice.Position: CustomDebugStringConvertible
 {
-    mutating func toggle()
+    public mutating func toggle()
     {
         switch self {
         case .front:
@@ -23,7 +23,7 @@ extension AVCaptureDevice.Position: CustomStringConvertible
         }
     }
 
-    public var description: String
+    public var debugDescription: String
     {
         switch self {
         case .front:
@@ -38,66 +38,23 @@ extension AVCaptureDevice.Position: CustomStringConvertible
     }
 }
 
-// MARK: - Orientation
-
-// For AVCaptureVideoPreviewLayer.
-extension AVCaptureVideoOrientation
-{
-    init?(deviceOrientation: UIDeviceOrientation)
+extension CGRect {
+    public var percentDescription: String
     {
-        switch deviceOrientation {
-        case .portrait:
-            self = .portrait
-        case .portraitUpsideDown:
-            self = .portraitUpsideDown
-        case .landscapeLeft:
-            self = .landscapeRight
-        case .landscapeRight:
-            self = .landscapeLeft
-        case .faceUp,
-             .faceDown,
-             .unknown:
-            return nil
-        @unknown default:
-            return nil
-        }
-    }
-
-    init?(interfaceOrientation: UIInterfaceOrientation)
-    {
-        switch interfaceOrientation {
-        case .portrait:
-            self = .portrait
-        case .portraitUpsideDown:
-            self = .portraitUpsideDown
-        case .landscapeLeft:
-            self = .landscapeLeft
-        case .landscapeRight:
-            self = .landscapeRight
-        case .unknown:
-            return nil
-        @unknown default:
-            return nil
-        }
+        "(x: \(percent(origin.x)), y: \(percent(origin.y)), w: \(percent(size.width)), h: \(percent(size.height)))"
     }
 }
 
-func interfaceOrientation(deviceOrientation: UIDeviceOrientation) -> UIInterfaceOrientation
+private func percent(_ x: CGFloat) -> String
 {
-    switch deviceOrientation {
-    case .portrait:
-        return .portrait
-    case .portraitUpsideDown:
-        return .portraitUpsideDown
-    case .landscapeLeft:
-        return .landscapeRight
-    case .landscapeRight:
-        return .landscapeLeft
-    case .faceUp,
-         .faceDown,
-         .unknown:
-        return .unknown
-    @unknown default:
-        return .unknown
-    }
+    percentFormatter.string(from: NSNumber(value: Float(x))) ?? "NaN"
 }
+
+private let percentFormatter: NumberFormatter = {
+    let formatter = NumberFormatter()
+    formatter.numberStyle = .percent
+    formatter.minimumIntegerDigits = 1
+    formatter.maximumIntegerDigits = 3
+    formatter.maximumFractionDigits = 0
+    return formatter
+}()

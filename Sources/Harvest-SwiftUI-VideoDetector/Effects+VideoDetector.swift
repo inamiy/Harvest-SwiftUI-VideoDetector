@@ -18,7 +18,10 @@ private enum Global
 // MARK: - iOS Vision
 
 /// Uses `VNDetectTextRectanglesRequest`.
-func detectTextRects(cmSampleBuffer: CMSampleBuffer) -> AnyPublisher<[VNTextObservation], Swift.Error>
+func detectTextRects(
+    cmSampleBuffer: CMSampleBuffer,
+    deviceOrientation: UIDeviceOrientation
+) -> AnyPublisher<[VNTextObservation], Swift.Error>
 {
     Deferred { () -> AnyPublisher<[VNTextObservation], Swift.Error> in
         let passthrough = PassthroughSubject<[VNTextObservation], Swift.Error>()
@@ -36,8 +39,12 @@ func detectTextRects(cmSampleBuffer: CMSampleBuffer) -> AnyPublisher<[VNTextObse
         }
         request.reportCharacterBoxes = false
 
-        let pixelBuffer: CVPixelBuffer = CMSampleBufferGetImageBuffer(cmSampleBuffer)!
-        let handler = VNImageRequestHandler(cvPixelBuffer: pixelBuffer)
+        let pixelBuffer = CMSampleBufferGetImageBuffer(cmSampleBuffer)!
+
+        let handler = VNImageRequestHandler(
+            cvPixelBuffer: pixelBuffer,
+            orientation: deviceOrientation.estimatedImageOrientation?.cgImagePropertyOrientation ?? .up
+        )
 
         // NOTE: Run async to return `passthrough` first.
         Global.textDetectionQueue.async {
@@ -56,7 +63,10 @@ func detectTextRects(cmSampleBuffer: CMSampleBuffer) -> AnyPublisher<[VNTextObse
 }
 
 /// Uses `VNRecognizeTextRequest`.
-func detectTextRecognition(cmSampleBuffer: CMSampleBuffer) -> AnyPublisher<[VNRecognizedTextObservation], Swift.Error>
+func detectTextRecognition(
+    cmSampleBuffer: CMSampleBuffer,
+    deviceOrientation: UIDeviceOrientation
+) -> AnyPublisher<[VNRecognizedTextObservation], Swift.Error>
 {
     Deferred { () -> AnyPublisher<[VNRecognizedTextObservation], Swift.Error> in
         let passthrough = PassthroughSubject<[VNRecognizedTextObservation], Swift.Error>()
@@ -74,8 +84,12 @@ func detectTextRecognition(cmSampleBuffer: CMSampleBuffer) -> AnyPublisher<[VNRe
         }
         request.recognitionLevel = .fast
 
-        let pixelBuffer: CVPixelBuffer = CMSampleBufferGetImageBuffer(cmSampleBuffer)!
-        let handler = VNImageRequestHandler(cvPixelBuffer: pixelBuffer)
+        let pixelBuffer = CMSampleBufferGetImageBuffer(cmSampleBuffer)!
+
+        let handler = VNImageRequestHandler(
+            cvPixelBuffer: pixelBuffer,
+            orientation: deviceOrientation.estimatedImageOrientation?.cgImagePropertyOrientation ?? .up
+        )
 
         // NOTE: Run async to return `passthrough` first.
         Global.textDetectionQueue.async {
@@ -94,7 +108,7 @@ func detectTextRecognition(cmSampleBuffer: CMSampleBuffer) -> AnyPublisher<[VNRe
 }
 
 /// Uses `VNDetectFaceRectanglesRequest`.
-func detectFaces(cmSampleBuffer: CMSampleBuffer) -> AnyPublisher<[VNFaceObservation], Swift.Error>
+func detectFaces(cmSampleBuffer: CMSampleBuffer, deviceOrientation: UIDeviceOrientation) -> AnyPublisher<[VNFaceObservation], Swift.Error>
 {
     Deferred { () -> AnyPublisher<[VNFaceObservation], Swift.Error> in
         let passthrough = PassthroughSubject<[VNFaceObservation], Swift.Error>()
@@ -111,10 +125,14 @@ func detectFaces(cmSampleBuffer: CMSampleBuffer) -> AnyPublisher<[VNFaceObservat
             }
         }
 
-        let pixelBuffer: CVPixelBuffer = CMSampleBufferGetImageBuffer(cmSampleBuffer)!
+        let pixelBuffer = CMSampleBufferGetImageBuffer(cmSampleBuffer)!
 
         // For `detectFaces`, orientation = `.up` will work for both portrait & landscape.
-        let handler = VNImageRequestHandler(cvPixelBuffer: pixelBuffer, options: [:])
+        let handler = VNImageRequestHandler(
+            cvPixelBuffer: pixelBuffer,
+            orientation: deviceOrientation.estimatedImageOrientation?.cgImagePropertyOrientation ?? .up,
+            options: [:]
+        )
 
         // NOTE: Run async to return `passthrough` first.
         Global.textDetectionQueue.async {
@@ -136,43 +154,55 @@ func detectFaces(cmSampleBuffer: CMSampleBuffer) -> AnyPublisher<[VNFaceObservat
 
 /// Uses SwiftyTesseract.
 /// - Flow: `detectTextRects` (iOS Vision) -> Tesseract
-func recognizeTextsUsingTesseract(cmSampleBuffer: CMSampleBuffer)
--> AnyPublisher<[TesseractResult], VideoDetector.Error>
+func recognizeTextsUsingTesseract(
+    cmSampleBuffer: CMSampleBuffer,
+    deviceOrientation: UIDeviceOrientation
+) -> AnyPublisher<[TesseractResult], VideoDetector.Error>
 {
-    detectTextRects(cmSampleBuffer: cmSampleBuffer)
+    detectTextRects(cmSampleBuffer: cmSampleBuffer, deviceOrientation: deviceOrientation)
         .mapError(VideoDetector.Error.iOSVision)
         .map { Array($0.prefix(3)) }    // limit to 3 detections
         .flatMap { textObservations in
             _recognizeTextsUsingTesseract(
                 cmSampleBuffer: cmSampleBuffer,
-                textObservations: textObservations
+                textObservations: textObservations,
+                deviceOrientation: deviceOrientation
             )
         }
+        .receive(on: DispatchQueue.main)
         .eraseToAnyPublisher()
 }
 
 /// Runs a single Tesseract OCR.
-private func runTesseract(cmSampleBuffer: CMSampleBuffer) -> AnyPublisher<String, VideoDetector.Error>
+private func runTesseract(
+    cmSampleBuffer: CMSampleBuffer,
+    deviceOrientation: UIDeviceOrientation
+) -> AnyPublisher<(detectedText: String, image: UIImage), VideoDetector.Error>
 {
-    guard let image = cmSampleBuffer.uiImage else { return .empty }
+    guard let image = cmSampleBuffer.uiImage(deviceOrientation: deviceOrientation) else { return .empty }
 
     // For debugging.
     #if DEBUG
-    if tesseractFlag == .none {
-        return Result.Publisher(.success("noop")).eraseToAnyPublisher()
+    if !isTesseractEnabled {
+        return Result.Publisher(.success(("noop", UIImage()))).eraseToAnyPublisher()
     }
     #endif
 
     let tesseract = Tesseract(languages: [.japanese])
+
     return tesseract.performOCRPublisher(on: image)
         .subscribe(on: Global.tesseractQueue)
         .mapError(VideoDetector.Error.tesseract)
+        .map { ($0, image) }
         .eraseToAnyPublisher()
 }
 
 /// Uses Tesseract multiple times after text-rectangles are detected.
-private func _recognizeTextsUsingTesseract(cmSampleBuffer: CMSampleBuffer, textObservations: [VNTextObservation])
--> AnyPublisher<[TesseractResult], VideoDetector.Error>
+private func _recognizeTextsUsingTesseract(
+    cmSampleBuffer: CMSampleBuffer,
+    textObservations: [VNTextObservation],
+    deviceOrientation: UIDeviceOrientation
+) -> AnyPublisher<[TesseractResult], VideoDetector.Error>
 {
     if textObservations.isEmpty {
         return Result.Publisher(.success([]))
@@ -181,14 +211,19 @@ private func _recognizeTextsUsingTesseract(cmSampleBuffer: CMSampleBuffer, textO
 
     let runners = textObservations
         .map { textObservation -> AnyPublisher<TesseractResult, VideoDetector.Error> in
-            guard let croppedBuffer = cmSampleBuffer.cropped(rect0To1: textObservation.boundingBox) else {
+            /// - Note: In current orientation's coordinate, bottom-left origin.
+            let boundingBox = textObservation.boundingBox
+
+            /// - Note: In camera's coordinate, top-left origin.
+            let boundingBoxInCamera = convertBoundingBox(boundingBox, deviceOrientation: deviceOrientation)
+
+            guard let croppedBuffer = cmSampleBuffer.cropped(boundingBox: boundingBoxInCamera) else {
                 return Fail(outputType: TesseractResult.self, failure: .detectionFailed)
                     .eraseToAnyPublisher()
             }
 
-            return runTesseract(cmSampleBuffer: croppedBuffer)
-                // NOTE: Pass unchanged `boundingBox` which will be handled by `VideoPreviewView`.
-                .map { (textObservation.boundingBox, $0, croppedBuffer.uiImage) }
+            return runTesseract(cmSampleBuffer: croppedBuffer, deviceOrientation: deviceOrientation)
+                .map { (boundingBox, $0, $1) }
                 .eraseToAnyPublisher()
         }
 
@@ -216,11 +251,50 @@ extension VideoDetector
 typealias TesseractResult = (CGRect, String, UIImage?)
 
 #if DEBUG
-private enum TesseractRecognitionMode
-{
-    case none
-    case recognize
-}
-
-private let tesseractFlag = TesseractRecognitionMode.recognize
+private let isTesseractEnabled = true
 #endif
+
+// MARK: - Vision boundingBox conversion
+
+/// - Parameters:
+///   - boundingBox: `CGRect` that has scale values from 0 to 1 in current device orientation's coordinate with bottom-left origin.
+///   - deviceOrientation: Current device orientation.
+/// - Returns: A new bounding box that has top-left origin in camera's coordinate, e.g. for passing to `AVCaptureVideoPreviewLayer.layerRectConverted`.
+func convertBoundingBox(_ boundingBox: CGRect, deviceOrientation: UIDeviceOrientation) -> CGRect
+{
+    var boundingBox = boundingBox
+
+    // Flip y-axis as `boundingBox.origin` starts from bottom-left.
+    boundingBox.origin.y = 1 - boundingBox.origin.y - boundingBox.height
+
+    switch deviceOrientation {
+    case .portrait:
+        // 90 deg clockwise
+        boundingBox = boundingBox
+            .applying(CGAffineTransform(translationX: -0.5, y: -0.5))
+            .applying(CGAffineTransform(rotationAngle: -.pi / 2))
+            .applying(CGAffineTransform(translationX: 0.5, y: 0.5))
+    case .portraitUpsideDown:
+        // 90 deg counter-clockwise
+        boundingBox = boundingBox
+            .applying(CGAffineTransform(translationX: -0.5, y: -0.5))
+            .applying(CGAffineTransform(rotationAngle: .pi / 2))
+            .applying(CGAffineTransform(translationX: 0.5, y: 0.5))
+    case .landscapeLeft:
+        break
+    case .landscapeRight:
+        // 180 deg
+        boundingBox = boundingBox
+            .applying(CGAffineTransform(translationX: -0.5, y: -0.5))
+            .applying(CGAffineTransform(rotationAngle: .pi))
+            .applying(CGAffineTransform(translationX: 0.5, y: 0.5))
+    case .unknown,
+         .faceUp,
+         .faceDown:
+        break
+    @unknown default:
+        break
+    }
+
+    return boundingBox
+}

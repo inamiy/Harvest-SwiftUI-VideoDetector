@@ -16,7 +16,8 @@ let package = Package(
             targets: ["Harvest-SwiftUI-VideoDetector"]),
     ],
     dependencies: [
-        .package(url: "https://github.com/inamiy/Harvest", from: "0.2.0"),
+        .package(url: "https://github.com/inamiy/Harvest", from: "0.3.0"),
+        .package(url: "https://github.com/inamiy/OrientationKit", from: "0.1.0"),
         .package(url: "https://github.com/SwiftyTesseract/SwiftyTesseract", from: "4.0.0"),
     ],
     targets: [
@@ -24,6 +25,7 @@ let package = Package(
             name: "Harvest-SwiftUI-VideoCapture",
             dependencies: [
                 "Harvest",
+                "OrientationKit",
                 .product(name: "HarvestStore", package: "Harvest"),
                 .product(name: "HarvestOptics", package: "Harvest")
             ]),

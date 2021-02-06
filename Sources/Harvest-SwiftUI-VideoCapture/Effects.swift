@@ -5,6 +5,9 @@ import Combine
 import FunOptics
 import Harvest
 import HarvestOptics
+import OrientationKit
+
+// MARK: -  Global states
 
 internal enum Global
 {
@@ -19,7 +22,11 @@ internal enum Global
     static let sessionQueue = DispatchQueue(label: "\(queuePrefix).sessionQueue")
     static let videoOutputQueue = DispatchQueue(label: "\(queuePrefix).videoDataOutputQueue", qos: .userInteractive)
     static let textDetectionQueue = DispatchQueue(label: "\(queuePrefix).textDetectionQueue", qos: .userInteractive)
+
+    static let orientationManager = OrientationManager()
 }
+
+// MARK: - CaptureSession
 
 func makeSessionID() -> SessionID
 {
@@ -223,6 +230,27 @@ func log(_ items: Any...) -> AnyPublisher<Void, Never>
     return Just(())
         .eraseToAnyPublisher()
     #endif
+}
+
+// MARK: - OrientationManager
+
+func startOrientation(interval: TimeInterval, queue: OperationQueue = .current ?? .main) -> AnyPublisher<UIDeviceOrientation, Never>
+{
+    Deferred { () -> AnyPublisher<UIDeviceOrientation, Never> in
+        Global.orientationManager.start(interval: interval, queue: queue)
+
+        return Global.orientationManager.$deviceOrientation
+            .filter { !$0.isFlat }
+            .eraseToAnyPublisher()
+    }
+    .handleEvents(receiveCancel: {
+        Global.orientationManager.stop()
+    })
+//    .handleEvents(receiveOutput: {
+//        print("deviceOrientation = \($0)")
+//    })
+    .receive(on: DispatchQueue.main)
+    .eraseToAnyPublisher()
 }
 
 // MARK: - VideoCapture.Error

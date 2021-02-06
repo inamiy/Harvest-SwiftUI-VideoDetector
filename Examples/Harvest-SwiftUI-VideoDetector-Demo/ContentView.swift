@@ -21,8 +21,11 @@ struct ContentView: View
                 ZStack(alignment: .bottom) {
                     Color.black.opacity(0.5).ignoresSafeArea()
 
-                    VideoPreviewView(sessionID: sessionID, detectedRects: store.state.detectedRects)
-                        .map { $0.ignoresSafeArea() }
+                    VideoPreviewView(
+                        sessionID: sessionID,
+                        detectedRects: store.state.detectedRects
+                    )
+                    .map { $0.ignoresSafeArea() }
 
                     self.controlView()
                 }

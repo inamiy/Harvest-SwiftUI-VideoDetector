@@ -15,8 +15,8 @@
         "repositoryURL": "https://github.com/inamiy/Harvest.git",
         "state": {
           "branch": null,
-          "revision": "9122239f1f52b9979e160f54705f9e8f4004ae3b",
-          "version": "0.2.0"
+          "revision": "cc1236233eb71a87da35283262d5a166931af28d",
+          "version": "0.3.0"
         }
       },
       {
@@ -34,6 +34,15 @@
         "state": {
           "branch": null,
           "revision": "d8b5fab45f5dc0b1d34b0ca7bf6620b72426adf1",
+          "version": "0.1.0"
+        }
+      },
+      {
+        "package": "OrientationKit",
+        "repositoryURL": "https://github.com/inamiy/OrientationKit",
+        "state": {
+          "branch": null,
+          "revision": "491927e9cc835c0fcc7eac349c0245024f5d8579",
           "version": "0.1.0"
         }
       },
