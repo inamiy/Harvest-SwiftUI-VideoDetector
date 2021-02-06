@@ -106,7 +106,6 @@
 				1F7B39D5252B5B4100500B4D /* Sources */,
 				1F7B39D6252B5B4100500B4D /* Frameworks */,
 				1F7B39D7252B5B4100500B4D /* Resources */,
-				1F7DC0C125373940004C33AA /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -175,26 +174,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		1F7DC0C125373940004C33AA /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# https://pspdfkit.com/guides/ios/current/knowledge-base/library-not-found-swiftpm/\nfind \"${CODESIGNING_FOLDER_PATH}\" -name '*.framework' -print0 | while read -d $'\\0' framework \ndo\n    codesign --force --deep --sign \"${EXPANDED_CODE_SIGN_IDENTITY}\" --preserve-metadata=identifier,entitlements --timestamp=none \"${framework}\" \ndone\n\n";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		1F7B39D5252B5B4100500B4D /* Sources */ = {
