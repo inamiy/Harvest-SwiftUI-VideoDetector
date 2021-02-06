@@ -1,3 +1,4 @@
+import UIKit
 import AVFoundation
 import Combine
 import FunOptics
@@ -15,6 +16,7 @@ extension VideoCapture
         case _didMakeSession(SessionID)
         case startSession
         case _didOutput(CMSampleBuffer)
+        case _didUpdateOrientation(UIDeviceOrientation)
         case changeCameraPosition
         case stopSession
         case _didStopSession
@@ -27,13 +29,17 @@ extension VideoCapture
         var cameraPosition: AVCaptureDevice.Position
         public var sessionState: SessionState
 
+        public var deviceOrientation: UIDeviceOrientation
+
         public init(
             cameraPosition: AVCaptureDevice.Position = .front,
-            sessionState: SessionState = .noSession
+            sessionState: SessionState = .noSession,
+            deviceOrientation: UIDeviceOrientation = .unknown
         )
         {
             self.cameraPosition = cameraPosition
             self.sessionState = sessionState
+            self.deviceOrientation = deviceOrientation
         }
 
         public enum SessionState: CustomStringConvertible
@@ -95,13 +101,22 @@ extension VideoCapture
 
                 state.sessionState = .running(sessionID)
 
-                let publisher = startSession(sessionID: sessionID)
+                let sessionPublisher = startSession(sessionID: sessionID)
                     .map(Input._didOutput)
                     .catch { Just(Input._error($0))}
-                return Effect(publisher)
+
+                let orientationPublisher = startOrientation(interval: 0.1)
+                    .map(Input._didUpdateOrientation)
+
+                return Effect(sessionPublisher)
+                    + Effect(orientationPublisher, id: .orientation)
 
             case ._didOutput:
                 // Ignored: Composing reducer should handle this.
+                return .empty
+
+            case let ._didUpdateOrientation(deviceOrientation):
+                state.deviceOrientation = deviceOrientation
                 return .empty
 
             case .changeCameraPosition:
@@ -134,7 +149,7 @@ extension VideoCapture
                     return .empty
                 }
                 state.sessionState = .idle(sessionID)
-                return .empty
+                return .cancel(.orientation)
 
             case let ._error(error):
                 let publisher = log("\(error)")
@@ -160,7 +175,10 @@ extension VideoCapture
 
     public typealias EffectQueue = BasicEffectQueue
 
-    public typealias EffectID = Never
+    public enum EffectID
+    {
+        case orientation
+    }
 
     public struct World<S: Scheduler>
     {
@@ -176,5 +194,20 @@ extension VideoCapture.State.SessionState
     {
         guard case .running = self else { return false }
         return true
+    }
+}
+
+extension VideoCapture.EffectID
+{
+    public var orientation: Void?
+    {
+        get {
+            guard case .orientation = self else { return nil }
+            return ()
+        }
+        set {
+            guard case .orientation = self, let _ = newValue else { return }
+            self = .orientation
+        }
     }
 }

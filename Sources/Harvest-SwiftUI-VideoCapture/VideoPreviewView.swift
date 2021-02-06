@@ -10,7 +10,12 @@ public struct VideoPreviewView: UIViewRepresentable
     private let session: AVCaptureSession
     private let detectedRects: [CGRect]
 
-    public init?(sessionID: SessionID, detectedRects: [CGRect] = [])
+    /// - Parameters:
+    ///   - detectedRects: Must have `(0,0)` at top-left in camera's coordinate (`UIDeviceOrientation.left`)
+    public init?(
+        sessionID: SessionID,
+        detectedRects: [CGRect] = []
+    )
     {
         guard let session = Global.videoSessions[sessionID] else {
             return nil
@@ -27,7 +32,7 @@ public struct VideoPreviewView: UIViewRepresentable
 
     public func updateUIView(_ uiView: UIKitView, context: Context)
     {
-        uiView.updateDetectedRects(self.detectedRects)
+        uiView.update(detectedRects: self.detectedRects)
     }
 }
 
@@ -66,7 +71,10 @@ extension VideoPreviewView
                 .map { _ in () }
                 .prepend(()) // initial run
                 .sink { [previewLayer] in
-                    if let orientation = AVCaptureVideoOrientation.init(deviceOrientation: UIDevice.current.orientation) {
+                    let interfaceOrientation = UIApplication.shared.windows.first?.windowScene?.interfaceOrientation
+                    if let interfaceOrientation = interfaceOrientation,
+                       let orientation = AVCaptureVideoOrientation.init(interfaceOrientation: interfaceOrientation)
+                    {
                         previewLayer.connection?.videoOrientation = orientation
                     }
                 }
@@ -87,7 +95,7 @@ extension VideoPreviewView
             self.previewLayer.frame = self.layer.bounds
         }
 
-        func updateDetectedRects(_ detectedRects: [CGRect])
+        func update(detectedRects: [CGRect])
         {
             // Required for avoiding `CALayer position contains NaN: [nan nan]` crash
             // when session is deallocated.
@@ -97,18 +105,18 @@ extension VideoPreviewView
 
             CATransaction.setDisableActions(true)
             defer { CATransaction.setDisableActions(false) }
-            
+
             self.detectedLayers.forEach {
                 $0.isHidden = true
             }
 
+//            print("detectedRects = \(detectedRects.max(by: { $0.width * $0.height < $1.width * $1.height })?.percentDescription ?? "none")")
+
             zip(detectedRects, self.detectedLayers).forEach { rect, layer in
-                var boundingBox = rect
-
-                // Flip y-axis as `boundingBox.origin` starts from bottom-left.
-                boundingBox.origin.y = 1 - boundingBox.origin.y - boundingBox.height
-
-                let convertedRect = self.previewLayer.layerRectConverted(fromMetadataOutputRect: boundingBox)
+                // NOTE:
+                // `metadataOutputRect` must have `(0,0)` at top-left in camera's coordinate (`UIDeviceOrientation.left`),
+                // which will be converted into current device orientation's coordinate.
+                let convertedRect = self.previewLayer.layerRectConverted(fromMetadataOutputRect: rect)
 
                 layer.frame = convertedRect
                 layer.isHidden = false

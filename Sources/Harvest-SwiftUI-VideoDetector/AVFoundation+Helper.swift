@@ -63,17 +63,18 @@ extension CMSampleTimingInfo
 }
 
 /// CVPixelBuffer -(crop)-> CVPixelBuffer
+///
+/// - Parameter cropRect: In camera's coordinate with top-left origin.
 func croppedPixelBuffer(
     for pixelBuffer: CVPixelBuffer,
-    cropRect: CGRect,
-    isOriginBottomLeft: Bool = true
+    cropRect: CGRect
 ) -> CVPixelBuffer?
 {
     var cropRect = cropRect
-    if !isOriginBottomLeft {
-        let height = CGFloat(CVPixelBufferGetHeight(pixelBuffer))
-        cropRect.origin.y = height - cropRect.origin.y - cropRect.size.height
-    }
+
+    // Change origin to bottom-left.
+    let height = CGFloat(CVPixelBufferGetHeight(pixelBuffer))
+    cropRect.origin.y = height - cropRect.origin.y - cropRect.size.height
 
     var image = CIImage(cvImageBuffer: pixelBuffer)
     image = image.cropped(to: cropRect)
@@ -93,7 +94,7 @@ func croppedPixelBuffer(
 
 extension CMSampleBuffer
 {
-    var uiImage: UIImage?
+    func uiImage(deviceOrientation: UIDeviceOrientation) -> UIImage?
     {
         guard let pixelBuffer = CMSampleBufferGetImageBuffer(self) else {
             return nil
@@ -108,25 +109,29 @@ extension CMSampleBuffer
             return nil
         }
 
-        let image = UIImage(cgImage: cgimage)
+        let image = UIImage(cgImage: cgimage, scale: 0, orientation: deviceOrientation.estimatedImageOrientation ?? .right)
         return image
     }
 
-    /// - Parameter: rect0To1: `CGRect` that has scale values from 0 to 1, with bottom-left origin.
-    func cropped(rect0To1: CGRect) -> CMSampleBuffer?
+    /// - Parameters:
+    ///   - boundingBox: `CGRect` that has scale values from 0 to 1 in camera's coordinate with top-left origin.
+    func cropped(boundingBox: CGRect) -> CMSampleBuffer?
     {
         withSampleBuffer(sampleBuffer: self) { pixelBuffer -> CVPixelBuffer? in
             let bufferWidth = CGFloat(CVPixelBufferGetWidth(pixelBuffer))
             let bufferHeight = CGFloat(CVPixelBufferGetHeight(pixelBuffer))
 
             let convertedRect = CGRect(
-                x: bufferWidth * rect0To1.minX,
-                y: bufferHeight * rect0To1.minY,
-                width: bufferWidth * rect0To1.width,
-                height: bufferHeight * rect0To1.height
+                x: bufferWidth * boundingBox.minX,
+                y: bufferHeight * boundingBox.minY,
+                width: bufferWidth * boundingBox.width,
+                height: bufferHeight * boundingBox.height
             )
 
-            return croppedPixelBuffer(for: pixelBuffer, cropRect: convertedRect)
+            return croppedPixelBuffer(
+                for: pixelBuffer,
+                cropRect: convertedRect
+            )
         }
     }
 }

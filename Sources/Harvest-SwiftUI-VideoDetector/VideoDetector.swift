@@ -28,11 +28,11 @@ extension VideoDetector
         public var videoCapture: VideoCapture.State
 
         public init(
-            detectMode: DetectMode = .face,
+            detectMode: DetectMode = .textRect,
             detectedRects: [CGRect] = [],
             detectedTextImages: [UIImage] = [],
             detectedTexts: [String] = [],
-            videoCapture: VideoCapture.State = .init()
+            videoCapture: VideoCapture.State = .init(cameraPosition: .back)
         )
         {
             self.detectMode = detectMode
@@ -70,39 +70,56 @@ extension VideoDetector
             case let .videoCapture(._didOutput(cmSampleBuffer)):
                 switch state.detectMode {
                 case .face:
-                    let publisher = detectFaces(cmSampleBuffer: cmSampleBuffer)
-                        .map { Input._didDetectRects($0.map { $0.boundingBox }) }
-                        .catch { _ in Just(Input._error(.detectionFailed)) }
+                    let publisher = detectFaces(
+                        cmSampleBuffer: cmSampleBuffer,
+                        deviceOrientation: state.videoCapture.deviceOrientation
+                    )
+                    .map { Input._didDetectRects($0.map { $0.boundingBox }) }
+                    .catch { _ in Just(Input._error(.detectionFailed)) }
+
                     return Effect(publisher)
 
                 case .textRect:
-                    let publisher = detectTextRects(cmSampleBuffer: cmSampleBuffer)
-                        .map { Input._didDetectRects($0.map { $0.boundingBox }) }
-                        .catch { _ in Just(Input._error(.detectionFailed)) }
+                    let publisher = detectTextRects(
+                        cmSampleBuffer: cmSampleBuffer,
+                        deviceOrientation: state.videoCapture.deviceOrientation
+                    )
+                    .map { Input._didDetectRects($0.map { $0.boundingBox }) }
+                    .catch { _ in Just(Input._error(.detectionFailed)) }
+
                     return Effect(publisher)
 
                 case .textRecognitionIOSVision:
-                    let publisher = detectTextRecognition(cmSampleBuffer: cmSampleBuffer)
-                        .map {
-                            Input._didDetectTexts(
-                                $0.map { $0.boundingBox },
-                                $0.flatMap { $0.topCandidates(3) }
-                                    .map { $0.string },
-                                []
-                            )
-                        }
-                        .catch { _ in Just(Input._error(.detectionFailed)) }
+                    let publisher = detectTextRecognition(
+                        cmSampleBuffer: cmSampleBuffer,
+                        deviceOrientation: state.videoCapture.deviceOrientation
+                    )
+                    .map {
+                        Input._didDetectTexts(
+                            $0.map { $0.boundingBox },
+                            $0.flatMap { $0.topCandidates(3) }
+                                .map { $0.string },
+                            []
+                        )
+                    }
+                    .catch { _ in Just(Input._error(.detectionFailed)) }
+
                     return Effect(publisher)
 
                 case .textRecognitionTesseract:
-                    let publisher = recognizeTextsUsingTesseract(cmSampleBuffer: cmSampleBuffer)
-                        .map { Input._didDetectTexts($0.map { $0.0 }, $0.map { $0.1 }, $0.compactMap { $0.2 }) }
-                        .catch { _ in Just(Input._error(.detectionFailed)) }
+                    let publisher = recognizeTextsUsingTesseract(
+                        cmSampleBuffer: cmSampleBuffer,
+                        deviceOrientation: state.videoCapture.deviceOrientation
+                    )
+                    .map { Input._didDetectTexts($0.map { $0.0 }, $0.map { $0.1 }, $0.compactMap { $0.2 }) }
+                    .catch { _ in Just(Input._error(.detectionFailed)) }
+
                     return Effect(publisher)
                 }
 
             case let ._didDetectRects(rects):
                 state.detectedRects = rects
+                    .map { convertBoundingBox($0, deviceOrientation: state.videoCapture.deviceOrientation) }
                 state.detectedTexts = []
                 state.detectedTextImages = []
                 return .empty
@@ -114,6 +131,7 @@ extension VideoDetector
                 }
                 #endif
                 state.detectedRects = rects
+                    .map { convertBoundingBox($0, deviceOrientation: state.videoCapture.deviceOrientation) }
                 if !croppedImages.isEmpty {
                     state.detectedTextImages = croppedImages
                 }
@@ -132,7 +150,7 @@ extension VideoDetector
 
     public typealias EffectQueue = BasicEffectQueue
 
-    public typealias EffectID = Never
+    public typealias EffectID = VideoCapture.EffectID
 
     public struct World<S: Scheduler>
     {
